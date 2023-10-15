@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming with YOLO</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e9ecef;
+        }
+
+        h1 {
+            color: #444;
+            font-weight: 600;
+        }
+
+        .img-fluid {
+            border: 5px solid #555;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .video-off {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Video Streaming with YOLO Detection</h1>
+        <div class="row justify-content-center" id="videoGrid">
+            <!-- Para cada vídeo, repita esta estrutura -->
+            <div class="col-md-12 mb-4 video-container">
+                <div class="loading"></div>
+                <img class="img-fluid rounded video-stream" src="/video_feed/webcam" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\'video-off\'>Video Off</div>'">
+            </div>
+            <div class="col-md-12 mb-4 video-container">
+                <div class="loading"></div>
+                <img class="img-fluid rounded video-stream" src="/video_feed/webcam2" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\'video-off\'>Video Off</div>'">
+            </div>
+            <div class="col-md-12 video-container">
+                <div class="loading"></div>
+                <img class="img-fluid rounded video-stream" src="/video_feed/webcam3" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\'video-off\'>Video Off</div>'">
+            </div>
+            <div class="col-md-12 video-container">
+                <div class="loading"></div>
+                <img class="img-fluid rounded video-stream" src="/video_feed/webcam4" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\'video-off\'>Video Off</div>'">
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let videos = document.querySelectorAll(".video-stream");
+            videos.forEach(video => {
+                video.addEventListener("loadstart", function() {
+                    this.previousElementSibling.style.display = "block"; // Exibir o spinner de carregamento
+                });
+
+                video.addEventListener("loadeddata", function() {
+                    this.previousElementSibling.style.display = "none"; // Esconder o spinner de carregamento
+                });
+            });
+        });
+    </script>
+</body>
+</html>
