@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 ultralytics
 lapx
+opencv-python
+omegaconf

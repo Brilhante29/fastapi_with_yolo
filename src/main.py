@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="src/templates")
 
 BASE_ML_PATH = 'src/core/ml/models/yolov8'
 # Carregar modelos YOLO
-track_model = YOLO(f'{BASE_ML_PATH}/yolov8n.pt')
+track_model = YOLO(f'{BASE_ML_PATH}/yolov8n-face.pt')
 pose_model = YOLO(f'{BASE_ML_PATH}/yolov8n-pose.pt')
 
 frame_lock = threading.Lock()
@@ -56,7 +56,7 @@ def generate_video(model, tracking=False, background_tasks: BackgroundTasks = No
                 frame = current_frame.copy() if current_frame is not None else None
             if frame is None:
                 continue
-            results = model.track(frame) if tracking else model(frame)
+            results = model.predict(frame) if tracking else model(frame)
             frame_ = results[0].plot()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame_)[1].tobytes() + b'\r\n')
