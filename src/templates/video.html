@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming Analytics</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #e9ecef; }
+        h1 { color: #444; font-weight: 600; }
+        .img-fluid { width: 100%; border: 5px solid #555; box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2); cursor: pointer; }
+        .container { display: flex; flex-direction: column; align-items: center; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1); padding: 30px; width: 80%; margin: auto; }
+        .video-wrapper { display: flex; justify-content: space-between; width: 100%; }
+        .video-container { flex: 1; margin: 0 10px; text-align: center; }
+        .logo-container { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+        .logo-container img { width: 150px; transition: all 0.3s ease; }
+        .logo-container img:hover { transform: scale(1.1); }
+        .video-title { font-size: 1.5em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="https://th.bing.com/th/id/R.1d171f1b5922cc4204e5024ac464ccf7?rik=bjroyhUT8MYrBA&pid=ImgRaw&r=0" alt="Logo">
+    </div>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Video Streaming Analytics</h1>
+        <div class="video-wrapper">
+            <div class="col-6 mb-4 video-container">
+                <div class="video-title">Pose</div>
+                <img class="img-fluid rounded video-stream" src="/video_feed">
+            </div>
+            <div class="col-6 mb-4 video-container">
+                <div class="video-title">Tracking</div>
+                <img class="img-fluid rounded video-stream" src="/video_feed_track">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
