@@ -25,7 +25,7 @@ cap = None
 def capture_video():
     global camera_is_on, cap, current_frame
     camera_is_on = True
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     try:
         while camera_is_on:
             ret, frame = cap.read()
