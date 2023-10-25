@@ -13,8 +13,10 @@ app = FastAPI()
 templates = Jinja2Templates(directory="src/templates")
 
 BASE_ML_PATH = 'src/core/ml/models/yolov8'
+
 # Carregar modelos YOLO
-track_model = YOLO(f'{BASE_ML_PATH}/yolov8n-face.pt')
+track_model = YOLO(f'{BASE_ML_PATH}/yolov8n.pt')
+face_model = YOLO(f'{BASE_ML_PATH}/yolov8n-face.pt')
 pose_model = YOLO(f'{BASE_ML_PATH}/yolov8n-pose.pt')
 
 frame_lock = threading.Lock()
@@ -48,7 +50,7 @@ async def stop_camera():
     if camera_is_on:
         camera_is_on = False
 
-def generate_video(model, tracking=False, background_tasks: BackgroundTasks = None):
+def generate_video(model, mode: str, background_tasks: BackgroundTasks = None):
     ensure_camera_is_on()
     try:
         while True:
@@ -56,7 +58,12 @@ def generate_video(model, tracking=False, background_tasks: BackgroundTasks = No
                 frame = current_frame.copy() if current_frame is not None else None
             if frame is None:
                 continue
-            results = model.predict(frame) if tracking else model(frame)
+            if mode == 'tracking':
+                results = model.track(frame, persist=True)
+            elif mode == 'face':
+                results = model.predict(frame)
+            else:  # mode == 'pose'
+                results = model(frame)
             frame_ = results[0].plot()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame_)[1].tobytes() + b'\r\n')
@@ -65,14 +72,17 @@ def generate_video(model, tracking=False, background_tasks: BackgroundTasks = No
         if background_tasks:
             background_tasks.add_task(stop_camera)
 
-@app.get("/video_feed")
+@app.get("/video_feed_pose")
 async def video_feed_endpoint(background_tasks: BackgroundTasks):
-    return StreamingResponse(generate_video(pose_model, background_tasks=background_tasks), media_type=MediaTypes.VIDEO.value)
+    return StreamingResponse(generate_video(pose_model, mode='pose', background_tasks=background_tasks), media_type=MediaTypes.VIDEO.value)
+
+@app.get("/video_feed_face")
+async def video_feed_face_endpoint(background_tasks: BackgroundTasks):
+    return StreamingResponse(generate_video(face_model, mode='face', background_tasks=background_tasks), media_type=MediaTypes.VIDEO.value)
 
 @app.get("/video_feed_track")
 async def video_feed_track_endpoint(background_tasks: BackgroundTasks):
-    return StreamingResponse(generate_video(track_model, tracking=True, background_tasks=background_tasks), media_type=MediaTypes.VIDEO.value)
-
+    return StreamingResponse(generate_video(track_model, mode='tracking', background_tasks=background_tasks), media_type=MediaTypes.VIDEO.value)
 @app.get("/video")
 async def video(request: Request):
     return templates.TemplateResponse("video.html", {"request": request})

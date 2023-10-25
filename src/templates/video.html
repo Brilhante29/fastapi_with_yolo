@@ -12,8 +12,8 @@
         h1 { color: #444; font-weight: 600; }
         .img-fluid { width: 100%; border: 5px solid #555; box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2); cursor: pointer; }
         .container { display: flex; flex-direction: column; align-items: center; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1); padding: 30px; width: 80%; margin: auto; }
-        .video-wrapper { display: flex; justify-content: space-between; width: 100%; }
-        .video-container { flex: 1; margin: 0 10px; text-align: center; }
+        .video-wrapper { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; } 
+        .video-container { flex: 1; margin: 10px; text-align: center; max-width: calc(50% - 20px); } 
         .logo-container { position: fixed; top: 20px; left: 20px; z-index: 1000; }
         .logo-container img { width: 150px; transition: all 0.3s ease; }
         .logo-container img:hover { transform: scale(1.1); }
@@ -29,10 +29,14 @@
         <div class="video-wrapper">
             <div class="col-6 mb-4 video-container">
                 <div class="video-title">Pose</div>
-                <img class="img-fluid rounded video-stream" src="/video_feed">
+                <img class="img-fluid rounded video-stream" src="/video_feed_pose">
             </div>
             <div class="col-6 mb-4 video-container">
-                <div class="video-title">Tracking</div>
+                <div class="video-title">face</div>
+                <img class="img-fluid rounded video-stream" src="/video_feed_face">
+            </div>
+            <div class="col-6 mb-4 video-container">
+                <div class="video-title">detect</div>
                 <img class="img-fluid rounded video-stream" src="/video_feed_track">
             </div>
         </div>
